@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Text } from 'react-native'
+import { StyleSheet, SafeAreaView, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { Link } from 'expo-router'
 
 // Themed components
@@ -6,14 +6,25 @@ import ThemedView from '../../components/ThemedView'
 import ThemedText from '../../components/ThemedText'
 import Spacer from '../../components/Spacer'
 import ThemedButton from '../../components/ThemedButton'
+import ThemedTextInput from '../../components/ThemedTextInput'
+import React from 'react'
 
-const handleSubmit = () => {
-    console.log("Register Pressed")
-}
+
 
 
 const Register = () => {
+
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+
+    const handleSubmit = () => {
+
+    console.log("Register Pressed", email, password)
+}
+
   return (
+    <TouchableWithoutFeedback  onPress={Keyboard.dismiss} accessible={false}>
+        
     <ThemedView style={styles.container}>
         <Spacer />
 
@@ -21,6 +32,24 @@ const Register = () => {
             Create An Account
         </ThemedText>
         <Spacer height={20}/>
+
+
+          <ThemedTextInput 
+        style= {{ marginBottom: 20}}
+        keyboardType='email-address'
+        onChangeText={setEmail}
+        value={email}
+        placeholder='email'  />
+
+
+            <ThemedTextInput
+            style= {{ marginBottom: 20}}
+            secureTextEntry={true}
+            placeholder='password' 
+            onChangeText={setPassword}
+            value={password}
+             />
+
 
         <ThemedButton onPress={handleSubmit} >
             <Text style={{color: 'white', fontWeight: 'bold'}}> Submit </Text>
@@ -35,6 +64,7 @@ const Register = () => {
 
 
     </ThemedView>
+    </TouchableWithoutFeedback>
   )
 }
 
