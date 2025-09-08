@@ -2,6 +2,7 @@ import { StyleSheet, SafeAreaView, Pressable, Text, TextInput, Keyboard, Touchab
 import { Link } from 'expo-router'
 import { Colors } from '../../constants/Colors'
 import React from 'react'
+import { useState } from 'react'
 
 // Themed components
 import ThemedView from '../../components/ThemedView'
@@ -9,17 +10,29 @@ import ThemedText from '../../components/ThemedText'
 import Spacer from '../../components/Spacer'
 import ThemedButton from '../../components/ThemedButton'
 import ThemedTextInput from '../../components/ThemedTextInput'
+import { useUser } from '../../hooks/useUser'
 
-
+ 
 const Login = () => {
 
 
-    const handleSubmit = () => {
-        console.log("Login Pressed", email, password)
-    }
-
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [error, setError] = useState(null)
+
+    const { login } = useUser()
+
+
+    const handleSubmit = async () => {
+
+        setError(null)
+
+        try {
+      await login(email, password)
+    } catch (error) {
+        setError(error.message)
+    }
+    }
 
 
   return (
@@ -51,6 +64,9 @@ const Login = () => {
         <ThemedButton onPress={handleSubmit} >
             <Text style={{color: 'white', fontWeight: 'bold'}}> Submit </Text>
         </ThemedButton>
+
+        <Spacer height={20}/>
+        {error && <Text style={ styles.error }>{error}</Text>}
 
         <Spacer height={100}/>
         <Link href="/register">
@@ -90,5 +106,14 @@ const styles = StyleSheet.create({
     },
     pressed: {
         opacity: 0.75,
+    },
+    error: {
+        color: Colors.warning,
+        padding: 10,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginHorizontal: 10,
+        borderColor: Colors.warning,
     }
 })

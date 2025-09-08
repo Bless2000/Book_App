@@ -2,15 +2,20 @@ import { StyleSheet } from 'react-native'
 import Spacer from '../../components/Spacer'
 import ThemedText from '../../components/ThemedText'
 import ThemedView from '../../components/ThemedView'
+import { useUser } from '../../hooks/useUser'
+import ThemedButton from '../../components/ThemedButton'
 
 
+ 
 
+const Profile = () => {
 
-const porfile = () => {
+    const { logout, user } = useUser()
+
   return (
     <ThemedView style={styles.container}>
         <ThemedText title={true} style={styles.title}>
-            User Profile Page
+            Welcome, {user?.email} 
         </ThemedText>
         <Spacer height={20}/>
 
@@ -18,11 +23,16 @@ const porfile = () => {
             More details will be added soon
         </ThemedText>
         <Spacer />
+
+        <ThemedButton onPress={logout}>
+            <ThemedText style={{ color: 'white', fontWeight: 'bold' }}> Logout </ThemedText>
+        </ThemedButton>
+
     </ThemedView>
   )
 }
 
-export default porfile
+export default Profile
 
 const styles = StyleSheet.create({
     container: {
